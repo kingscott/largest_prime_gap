@@ -6,5 +6,5 @@ If you are running the program on your local machine using OpenMPI, the commands
 
 ```bash
 ➜  ~ mpicc {name}.c -o {executable_name} -lmpi -lm -gmp
-➜  ~ mpirun ./{executable_name}
+➜  ~ mpirun -np {num_procs} ./{executable_name}
 ```
