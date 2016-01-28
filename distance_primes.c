@@ -11,7 +11,7 @@ int main(int argc, char **argv) {
   int num_procs;
   int source;
   int dest;
-  int bound = 1000000;
+  int bound = 100000000;
   double largest_diff = 0;
   double temp_diff = 0;
   MPI_Status  status;
@@ -59,8 +59,8 @@ int main(int argc, char **argv) {
     }
     
     //print data
-    printf("My rank: %d \t ", my_rank); 
-    gmp_printf("%Zd \t %Zd\n", curr_prime, diff);
+    //printf("My rank: %d \t ", my_rank); 
+    //gmp_printf("%Zd \t %Zd\n", curr_prime, diff);
     
     //set the previous prime to the current and get the next prime
     mpz_set(prev_prime, curr_prime);
