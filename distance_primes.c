@@ -11,7 +11,7 @@ int main(int argc, char **argv) {
   int num_procs;
   int source;
   int dest;
-  int bound = 1000;
+  int bound = 1000000;
   double largest_diff = 0;
   double temp_diff = 0;
   MPI_Status  status;
@@ -21,15 +21,6 @@ int main(int argc, char **argv) {
   MPI_Comm_rank(MPI_COMM_WORLD, &my_rank); // process rank
   MPI_Comm_size(MPI_COMM_WORLD, &num_procs); // find out the number of process
   
-  //setup output file
-  char file_name[15];
-  sprintf(file_name, "rank-%d.txt", my_rank);
-  FILE *f = fopen(file_name, "w");
-  if (f == NULL)
-  {
-      printf("Error opening file!\n");
-  }
-
   //calculate chunk size per processor and the remainder
   int chunk = floor(bound/num_procs);
   int r = fmod(bound, num_procs);
@@ -50,7 +41,7 @@ int main(int argc, char **argv) {
   mpz_init(curr_prime);
 
   //print starting index and get the first prime
-  fprintf(f, "My rank: %d \t %.0f \t STARTING INDEX\n", my_rank, index);
+  printf("My rank: %d \t %.0f \t STARTING INDEX\n", my_rank, index);
   mpz_nextprime(prev_prime, m_index);
   mpz_set(curr_prime, prev_prime);
   i = mpz_get_d(prev_prime) + 1;
@@ -68,8 +59,8 @@ int main(int argc, char **argv) {
     }
     
     //print data
-    fprintf(f, "My rank: %d \t ", my_rank); 
-    gmp_fprintf(f, "%Zd \t %Zd\n", curr_prime, diff);
+    printf("My rank: %d \t ", my_rank); 
+    gmp_printf("%Zd \t %Zd\n", curr_prime, diff);
     
     //set the previous prime to the current and get the next prime
     mpz_set(prev_prime, curr_prime);
@@ -81,9 +72,9 @@ int main(int argc, char **argv) {
   mpz_sub(diff, curr_prime, prev_prime);
   
   //print data
-  fprintf(f, "My rank: %d \t ", my_rank);
-  gmp_fprintf(f, "%Zd \t LAST PRIME\n", curr_prime);  
-  fprintf(f, "My rank: %d \t %.0f \t LARGEST DIFF\n", my_rank, largest_diff);
+  printf("My rank: %d \t ", my_rank);
+  gmp_printf("%Zd \t LAST PRIME\n", curr_prime);  
+  printf("My rank: %d \t %.0f \t LARGEST DIFF\n", my_rank, largest_diff);
   
   //if this is proc 0, listen for differences from other procs
   if (my_rank == 0) {
@@ -98,13 +89,12 @@ int main(int argc, char **argv) {
     }
     
     //print data
-    fprintf(f, "FINAL LARGEST DIFF: %.0f", largest_diff);
+    printf("FINAL LARGEST DIFF: %.0f", largest_diff);
   }
   else {
     MPI_Send(&largest_diff, 1, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD);
   }
 
   //cleanup
-  fclose(f);
   MPI_Finalize();
 }
