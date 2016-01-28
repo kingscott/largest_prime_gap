@@ -1,0 +1,40 @@
+My rank: 2 	 500 	 STARTING INDEX
+My rank: 2 	 503 	 0
+My rank: 2 	 509 	 6
+My rank: 2 	 521 	 12
+My rank: 2 	 523 	 2
+My rank: 2 	 541 	 18
+My rank: 2 	 547 	 6
+My rank: 2 	 557 	 10
+My rank: 2 	 563 	 6
+My rank: 2 	 569 	 6
+My rank: 2 	 571 	 2
+My rank: 2 	 577 	 6
+My rank: 2 	 587 	 10
+My rank: 2 	 593 	 6
+My rank: 2 	 599 	 6
+My rank: 2 	 601 	 2
+My rank: 2 	 607 	 6
+My rank: 2 	 613 	 6
+My rank: 2 	 617 	 4
+My rank: 2 	 619 	 2
+My rank: 2 	 631 	 12
+My rank: 2 	 641 	 10
+My rank: 2 	 643 	 2
+My rank: 2 	 647 	 4
+My rank: 2 	 653 	 6
+My rank: 2 	 659 	 6
+My rank: 2 	 661 	 2
+My rank: 2 	 673 	 12
+My rank: 2 	 677 	 4
+My rank: 2 	 683 	 6
+My rank: 2 	 691 	 8
+My rank: 2 	 701 	 10
+My rank: 2 	 709 	 8
+My rank: 2 	 719 	 10
+My rank: 2 	 727 	 8
+My rank: 2 	 733 	 6
+My rank: 2 	 739 	 6
+My rank: 2 	 743 	 4
+My rank: 2 	 751 	 LAST PRIME
+My rank: 2 	 18 	 LARGEST DIFF
