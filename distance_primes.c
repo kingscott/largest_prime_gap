@@ -34,6 +34,11 @@ int main(int argc, char **argv) {
   
 
   //initialize mpz types
+  mpz_t key_prime_1;
+  mpz_init_set_d(key_prime_1, 2);
+  mpz_t key_prime_2;
+  mpz_init_set_d(key_prime_2, 2);
+  
   mpz_t m_index;
   mpz_init_set_d(m_index, index);
   mpz_t diff;
@@ -57,6 +62,8 @@ int main(int argc, char **argv) {
 
     //if this is the largest difference, store it
     if (temp_diff > largest_diff) {
+      mpz_set(key_prime_1, prev_prime);
+      mpz_set(key_prime_2, curr_prime);
       largest_diff = temp_diff;
     }
 
@@ -77,41 +84,46 @@ int main(int argc, char **argv) {
 
   //if this is the largest difference, store it
   if (temp_diff > largest_diff) {
+    mpz_set(key_prime_1, prev_prime);
+    mpz_set(key_prime_2, curr_prime);
     largest_diff = temp_diff;
   }
-
-  //set the previous prime to the current and get the next prime
-  mpz_set(prev_prime, curr_prime);
-  mpz_nextprime(curr_prime, prev_prime);
-  i = mpz_get_d(curr_prime) + 1;
-
-
+  
   //print data
   printf("My rank: %d \t ", my_rank);
   gmp_printf("%Zd \t LAST PRIME\n", prev_prime);
-
-  //print data
-  printf("My rank: %d \t ", my_rank);
-  gmp_printf("%Zd \t LAST PRIME\n", curr_prime);
   printf("My rank: %d \t %.0f \t LARGEST DIFF\n", my_rank, largest_diff);
 
   //if this is proc 0, listen for differences from other procs
   if (my_rank == 0) {
     double proc_diff;
+    long long prime_1 = mpz_get_d(key_prime_1);
+    long long prime_2 = mpz_get_d(key_prime_2);
+    long long tmp_prime_1 = 0;
+    long long tmp_prime_2 = 0;
 
     //get difference from each proc and determine largest
     for (source = 1; source < num_procs; source++) {
       MPI_Recv(&proc_diff, 1, MPI_DOUBLE, source, 0, MPI_COMM_WORLD, &status);
+      MPI_Recv(&tmp_prime_1, 1, MPI_LONG_LONG, source, 1, MPI_COMM_WORLD, &status);
+      MPI_Recv(&tmp_prime_2, 1, MPI_LONG_LONG, source, 2, MPI_COMM_WORLD, &status);
       if (proc_diff > largest_diff) {
+        prime_1 = tmp_prime_1;
+        prime_2 = tmp_prime_2;
         largest_diff = proc_diff;
       }
     }
 
     //print data
-    printf("FINAL LARGEST DIFF: %.0f\n", largest_diff);
+    printf("FINAL LARGEST DIFF: %.0f \t between: %.0f and %.0f\n", largest_diff, prime_1, prime_2);
   }
   else {
+    long long prime_1 = mpz_get_d(key_prime_1);
+    long long prime_2 = mpz_get_d(key_prime_2);
+    
     MPI_Send(&largest_diff, 1, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD);
+    MPI_Send(&prime_1, 1, MPI_LONG_LONG, 0, 1, MPI_COMM_WORLD);
+    MPI_Send(&prime_2, 1, MPI_LONG_LONG, 0, 2, MPI_COMM_WORLD);
   }
   
   elapsed_time = MPI_Wtime();
