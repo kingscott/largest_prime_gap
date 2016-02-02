@@ -115,7 +115,7 @@ int main(int argc, char **argv) {
     }
 
     //print data
-    printf("FINAL LARGEST DIFF: %.0f \t between: %.0f and %.0f\n", largest_diff, prime_1, prime_2);
+    printf("FINAL LARGEST DIFF: %.0f \t between: %.0lli and %.0lli\n", largest_diff, prime_1, prime_2);
   }
   else {
     long long prime_1 = mpz_get_d(key_prime_1);
