@@ -11,8 +11,7 @@ int main(int argc, char **argv) {
   int num_procs;
   int source;
   int dest;
-  //  long long bound = 1000000000000;
-  long long bound = 1000000;
+  long long bound = 1000000000000;
   double largest_diff = 0;
   double temp_diff = 0;
   MPI_Status  status;
