@@ -11,7 +11,7 @@ int main(int argc, char **argv) {
   int num_procs;
   int source;
   int dest;
-  int bound = 1000000000000;
+  int bound = 10000000;
   double largest_diff = 0;
   double temp_diff = 0;
   MPI_Status  status;
@@ -21,7 +21,7 @@ int main(int argc, char **argv) {
   MPI_Comm_rank(MPI_COMM_WORLD, &my_rank); // process rank
   MPI_Comm_size(MPI_COMM_WORLD, &num_procs); // find out the number of process
   MPI_Barrier(MPI_COMM_WORLD);
-  double elapsed_time = -MPI_Wtime();
+  double elapsed_time = MPI_Wtime();
   
   //calculate chunk size per processor and the remainder
   int chunk = floor(bound/num_procs);
@@ -73,6 +73,9 @@ int main(int argc, char **argv) {
   printf("My rank: %d \t ", my_rank);
   gmp_printf("%Zd \t LAST PRIME\n", curr_prime);
   printf("My rank: %d \t %.0f \t LARGEST DIFF\n", my_rank, largest_diff);
+  
+  elapsed_time = MPI_Wtime() - elapsed_time;
+    printf("It took %f seconds.\n", elapsed_time);
 
   //if this is proc 0, listen for differences from other procs
   if (my_rank == 0) {
@@ -92,9 +95,6 @@ int main(int argc, char **argv) {
   else {
     MPI_Send(&largest_diff, 1, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD);
   }
-
-  elapsed_time = MPI_Wtime();
-  printf("It took %lf\n", elapsed_time);
 
   //cleanup
   MPI_Finalize();
